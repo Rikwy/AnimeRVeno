@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Anime RVeno</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/video.js/8.10.0/video-js.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/8.10.0/video.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.7/hls.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070b;--p:#a78bfa;--p2:#7c3aed;--t:#ececf4;--m:#8e8ea6;--g:rgba(255,255,255,.055);--b:rgba(255,255,255,.09)}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{font-family:Tajawal,system-ui,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:76px;background-image:radial-gradient(60% 40% at 80% -5%,rgba(124,58,237,.22),transparent),radial-gradient(50% 35% at 0 100%,rgba(124,58,237,.12),transparent);background-attachment:fixed;overflow-x:hidden}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit;color:inherit}
+.glass{background:var(--g);border:1px solid var(--b);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:18px}
+header{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:rgba(10,10,16,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--b)}
+.logo{font-weight:800;font-size:1.25rem}.logo b{color:var(--p)}
+nav.top{display:none;gap:6px;margin-inline-start:auto}
+nav a{padding:8px 14px;border-radius:12px;color:var(--m);transition:.2s}nav a.on,nav a:hover{background:var(--g);color:var(--t)}
+nav.bot{position:fixed;inset:auto 10px calc(8px + env(safe-area-inset-bottom,0px)) 10px;z-index:30;display:flex;justify-content:space-around;padding:6px;background:rgba(14,14,22,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--b);border-radius:20px}
+nav.bot a{display:flex;flex-direction:column;align-items:center;font-size:.7rem;gap:2px;padding:6px 8px}
+nav.bot a span{font-size:1.15rem}
+main{max-width:1280px;margin:auto;padding:16px}
+h1{font-size:1.5rem;margin-bottom:14px}h2{font-size:1.15rem}
+.sec{margin:26px 0}.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.sh a{color:var(--p);font-size:.9rem}
+.row{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity;scrollbar-width:none}.row::-webkit-scrollbar{display:none}
+.row .card{flex:0 0 138px;scroll-snap-align:start}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.card{display:block;min-width:0}.pic{position:relative;aspect-ratio:2/3;border-radius:16px;overflow:hidden;background:#15151f;border:1px solid var(--b)}
+.pic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}.card:hover .pic img{transform:scale(1.05)}
+.sc{position:absolute;top:8px;inset-inline-start:8px;padding:2px 8px;border-radius:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);font-size:.75rem;color:#ffd978}
+.card h3{font-size:.88rem;margin-top:7px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ja,.meta{font-size:.72rem;color:var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ja{direction:ltr;text-align:right}
+.sk{background:linear-gradient(90deg,#15151f,#22222f,#15151f);background-size:200% 100%;animation:sh 1.2s infinite}@keyframes sh{to{background-position:-200% 0}}
+.err,.empty,.note{padding:16px;color:var(--m);text-align:center;margin:10px 0}.err{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+.btn{background:linear-gradient(135deg,var(--p2),#9f67ff);border:0;color:#fff;padding:10px 18px;border-radius:14px;cursor:pointer;font-weight:700;box-shadow:0 6px 24px rgba(124,58,237,.35);display:inline-block}
+.btn.ghost{background:var(--g);box-shadow:none;border:1px solid var(--b)}
+.more{text-align:center;margin:18px 0}
+.hero{position:relative;overflow:hidden;min-height:300px;display:flex;align-items:flex-end;padding:22px}
+.hero .bg{position:absolute;inset:0;background-size:cover;background-position:center 25%;filter:blur(22px) brightness(.45);transform:scale(1.25)}
+.hero .in{position:relative;display:flex;gap:18px;align-items:flex-end;width:100%}
+.hero img{width:110px;border-radius:14px;border:1px solid var(--b);aspect-ratio:2/3;object-fit:cover}
+.hero h1{margin:6px 0}.hero p{color:#cfcfe0;font-size:.9rem;max-width:560px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.chip{padding:6px 14px;border-radius:20px;background:var(--g);border:1px solid var(--b);font-size:.85rem}.chip.on{background:var(--p2);border-color:var(--p)}
+.sf{display:flex;gap:8px;padding:10px;flex-wrap:wrap}.sf input,.sf select,.src textarea,.src input{background:rgba(0,0,0,.35);border:1px solid var(--b);border-radius:12px;padding:10px 12px;outline:none}.sf input{flex:1;min-width:160px}.sf input:focus,textarea:focus{border-color:var(--p)}
+.sf select option{background:#14141c}
+.det{position:relative;overflow:hidden;padding:18px}.det .in{position:relative;display:flex;gap:18px;flex-wrap:wrap}.det img.cv{width:150px;border-radius:16px;aspect-ratio:2/3;object-fit:cover}
+.det .bx{flex:1;min-width:240px}.tags{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.tags span{padding:3px 10px;border-radius:12px;background:rgba(167,139,250,.15);font-size:.78rem}
+.syn{color:#cfcfe0;line-height:1.8;margin:10px 0;white-space:pre-line}
+.eplist{display:grid;gap:8px}.ep{display:flex;gap:12px;align-items:center;padding:10px 14px;border-radius:14px}.ep:hover{border-color:var(--p)}.ep .n{min-width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:rgba(124,58,237,.25);font-weight:800}.ep.w{opacity:.55}.ep.w .n::after{content:"✓";margin-inline-start:2px}
+.ep b{font-weight:500}.ep small{display:block;color:var(--m);direction:ltr;text-align:right}
+.player{overflow:hidden;background:#000}.player video{width:100%;display:block;max-height:72vh;background:#000}
+.ctl{display:flex;gap:10px;align-items:center;padding:10px;background:rgba(14,14,22,.9);flex-wrap:wrap}.ctl button,.ctl select{background:var(--g);border:1px solid var(--b);border-radius:10px;padding:6px 12px;cursor:pointer}.ctl input[type=range]{accent-color:var(--p)}.ctl .sk2{flex:1;min-width:120px}
+.nov{padding:28px;text-align:center;line-height:1.9}.src{margin-top:14px;padding:14px;display:grid;gap:8px}.src textarea{min-height:80px;direction:ltr;width:100%}
+.pbar{height:4px;background:var(--b);border-radius:4px;margin-top:6px;overflow:hidden}.pbar i{display:block;height:100%;background:var(--p)}
+.wn{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;align-items:center}
+.player .video-js{width:100%;background:#000;direction:ltr;font-family:Tajawal,system-ui,sans-serif}
+.player .video-js .vjs-tech{max-height:none}
+.vjs-rv .vjs-control-bar{background:rgba(14,14,22,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--b);height:3.6em}
+.vjs-rv .vjs-big-play-button{background:rgba(255,255,255,.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--b);border-radius:50%;width:2.4em;height:2.4em;line-height:2.3em;margin:0;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 40px rgba(124,58,237,.45)}
+.vjs-rv:hover .vjs-big-play-button,.vjs-rv .vjs-big-play-button:focus{background:var(--p2);border-color:var(--p)}
+.vjs-rv .vjs-play-progress,.vjs-rv .vjs-volume-level{background:var(--p)}
+.vjs-rv .vjs-play-progress:before{color:var(--p)}
+.vjs-rv .vjs-slider{background:rgba(255,255,255,.18)}
+.vjs-rv .vjs-load-progress div{background:rgba(255,255,255,.22)}
+.vjs-rv .vjs-menu-content,.vjs-rv .vjs-menu li.vjs-selected{background:rgba(14,14,22,.88);backdrop-filter:blur(14px)}
+.vjs-rv .vjs-menu li.vjs-selected{color:var(--p)}
+.vjs-rv .rvb{font-size:1.3em;line-height:2.3em}
+.rvt{position:absolute;top:0;left:0;right:0;padding:12px 14px;font-weight:700;background:linear-gradient(rgba(0,0,0,.7),transparent);z-index:2;pointer-events:none;transition:opacity .3s;direction:rtl;text-align:right}
+.vjs-rv.vjs-user-inactive.vjs-playing .rvt{opacity:0}
+.wn label{color:var(--m);font-size:.85rem}.wn select{background:var(--g);border:1px solid var(--b);border-radius:10px;padding:6px 10px}.wn select option{background:#14141c}
+.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:0;border-radius:0;aspect-ratio:auto;filter:blur(2px) brightness(.5);transform:scale(1.04)}
+.ep>div{min-width:0;flex:1}.ep b{display:block}.ep small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ep .btn{flex:none}
+@media(min-width:768px){.grid{grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:16px}.row .card{flex-basis:168px}.hero img{width:170px}.hero{min-height:380px}}
+@media(min-width:1024px){nav.bot{display:none}nav.top{display:flex}body{padding-bottom:20px}main{padding:24px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><a class="logo" href="#/">Anime <b>RVeno</b></a>
+<nav class="top" id="nt"></nav></header>
+<main id="app"></main>
+<nav class="bot glass" id="nb"></nav>
+<script>
+const AL='https://graphql.anilist.co',API='https://api.jikan.moe/v4',DB={};
+const FB='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450"><rect width="100%" height="100%" fill="#15151f"/><text x="50%" y="50%" fill="#7a7a92" font-size="20" text-anchor="middle" font-family="sans-serif">Anime RVeno</text></svg>');
+const NAV=[['/','الرئيسية','⌂'],['/search','استكشاف','☰'],['/list/popular','الأشهر','★'],['/favs','المفضلة','♥'],['/continue','أكمل','▶']];
+const LISTS={
+popular:[()=>({sort:['POPULARITY_DESC']}),'الأنميات الأكثر شعبية'],
+top:[()=>({sort:['SCORE_DESC']}),'الأنميات الأعلى تقييماً'],
+new:[()=>({sort:['START_DATE_DESC'],st:'RELEASING'}),'الأنميات الجديدة'],
+seasonal:[()=>{const d=new Date();return{sort:['POPULARITY_DESC'],season:['WINTER','SPRING','SUMMER','FALL'][Math.floor(d.getMonth()/3)],y:d.getFullYear()}},'الأنميات الموسمية'],
+rec:[()=>({sort:['FAVOURITES_DESC']}),'المقترحة لك (الأكثر إضافة للمفضلة)']};
+const GEN=[['Action','أكشن'],['Adventure','مغامرة'],['Comedy','كوميديا'],['Drama','دراما'],['Fantasy','خيال'],['Horror','رعب'],['Sports','رياضة'],['Mystery','غموض'],['Romance','رومانسية']],GAR=Object.fromEntries(GEN);
+const STA={FINISHED:'مكتمل',RELEASING:'يُعرض حالياً',NOT_YET_RELEASED:'لم يُعرض بعد',CANCELLED:'أُلغي',HIATUS:'متوقف مؤقتاً'};
+const LIB=['One Piece','Naruto','Naruto Shippuden','Bleach','Bleach: Thousand-Year Blood War','Jujutsu Kaisen','Demon Slayer','Attack on Titan','Solo Leveling','Death Note','Hunter x Hunter','Dragon Ball Z','Black Clover','Chainsaw Man','My Hero Academia','Tokyo Revengers','Fullmetal Alchemist: Brotherhood','Vinland Saga','One Punch Man','Blue Lock'];
+const LIBID=[21,20,1735,269,41467,40748,38000,16498,52299,1535,11061,813,34572,44511,31964,42249,5114,37521,30276,49596];
+const AR=['ون بيس','ناروتو','ناروتو شيبودن','بليتش','بليتش حرب الدم لألف عام','جوجوتسو كايسن','قاتل الشياطين','هجوم العمالقة','سولو ليفلينج','مذكرة الموت','هنتر × هنتر','دراغون بول زد','بلاك كلوفر','رجل المنشار','أكاديمية بطلي','طوكيو ريفينجرز','الكيميائي المعدني الإخوية','فينلاند ساغا','ون بانش مان','بلو لوك'];
+const $=(s,r=document)=>r.querySelector(s),app=$('#app');
+const LS={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let T=0,last=0,chain=Promise.resolve();
+const TMO=window.RV_T||9000;
+const FEAT=[
+{id:21,title:'One Piece',ja:'ワンピース',score:8.7,eps:null,year:1999,genre:'Action',st:'Currently Airing',syn:'قرصان شاب اسمه لوفي يبحر مع طاقمه بحثاً عن الكنز الأعظم ليصبح ملك القراصنة.'},
+{id:20,title:'Naruto',ja:'ナルト',score:8.0,eps:220,year:2002,genre:'Action',st:'Finished Airing',syn:'فتى نينجا منبوذ يحلم بأن يصبح هوكاغي قريته ويكسب اعتراف الجميع.'},
+{id:269,title:'Bleach',ja:'ブリーチ',score:8.0,eps:366,year:2004,genre:'Action',st:'Finished Airing',syn:'مراهق يرى الأرواح يكتسب قوة شينيغامي ويحمي الأحياء من الأرواح الشريرة.'},
+{id:40748,title:'Jujutsu Kaisen',ja:'呪術廻戦',score:8.5,eps:24,year:2020,genre:'Action',st:'Finished Airing',syn:'طالب يبتلع إصبعاً ملعوناً فيدخل عالم السحرة ويقاتل اللعنات.'},
+{id:38000,title:'Demon Slayer',ja:'鬼滅の刃',score:8.4,eps:26,year:2019,genre:'Action',st:'Finished Airing',syn:'تانجيرو يصبح صائد شياطين لإنقاذ شقيقته التي تحولت إلى شيطانة.'},
+{id:16498,title:'Attack on Titan',ja:'進撃の巨人',score:8.6,eps:25,year:2013,genre:'Action',st:'Finished Airing',syn:'البشرية محاصرة خلف الأسوار هرباً من العمالقة، وشاب يقسم على الانتقام.'},
+{id:52299,title:'Solo Leveling',ja:'俺だけレベルアップな件',score:8.2,eps:12,year:2024,genre:'Action',st:'Finished Airing',syn:'أضعف صياد في العالم يحصل على قدرة فريدة تمكّنه من أن يزداد قوة بلا حدود.'},
+{id:1535,title:'Death Note',ja:'デスノート',score:8.6,eps:37,year:2006,genre:'Mystery',st:'Finished Airing',syn:'طالب عبقري يعثر على دفتر يقتل من تُكتب أسماؤهم فيه، ويلاحقه محقق غامض.'}];
+const fromLocal=f=>({_local:1,idMal:f.id,title:{english:f.title,native:f.ja},averageScore:Math.round(f.score*10),episodes:f.eps,status:f.st=='Currently Airing'?'RELEASING':'FINISHED',seasonYear:f.year,genres:[f.genre],description:f.syn});
+const FEATID=FEAT.map(f=>f.id);
+const clean=x=>String(x||'').replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').trim();
+const errMsg=e=>e&&(e.name=='AbortError'||/timeout/.test(e.message))?'انتهت مهلة الاتصال':(e&&e.message=='Failed to fetch'?'تعذّر الاتصال بالخادم':(e&&e.message)||'خطأ غير معروف');
+const cget=k=>{try{const c=JSON.parse(sessionStorage.getItem(k));if(c&&Date.now()-c.t<6e5)return c.d}catch{}},cset=(k,d)=>{try{sessionStorage.setItem(k,JSON.stringify({t:Date.now(),d}))}catch{}};
+/* AniList GraphQL: covers, banners, details, lists, search. 9s timeout, 1 retry, cached */
+async function gql(nm,q,v){const k='al:'+nm+JSON.stringify(v),c0=cget(k);if(c0)return c0;let err;
+for(let i=0;i<2;i++){const c=new AbortController(),id=setTimeout(()=>c.abort(),TMO);try{const r=await fetch(AL,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({query:q,variables:v}),signal:c.signal});
+if(r.status==429){err=new Error('HTTP 429');await sleep(Math.min(3,+r.headers.get('Retry-After')||2)*1000);continue}
+const j=await r.json().catch(()=>null);if(r.status>=500){err=new Error('HTTP '+r.status);await sleep(600);continue}
+if(!r.ok||(j&&j.errors&&!j.data)){const e=new Error(r.status==404?'غير موجود في AniList':(j&&j.errors&&j.errors[0].message)||'HTTP '+r.status);e.fatal=1;throw e}
+cset(k,j);return j}catch(e){if(e.fatal)throw e;err=e.name=='AbortError'?new Error('timeout'):e}finally{clearTimeout(id)}}throw err}
+const MF='idMal id title{romaji english native} coverImage{extraLarge large} bannerImage averageScore episodes status seasonYear startDate{year} genres format description(asHtml:false)';
+const PAGEQ=`query($p:Int,$pp:Int,$ids:[Int],$sort:[MediaSort],$q:String,$g:String,$season:MediaSeason,$y:Int,$st:MediaStatus,$stn:MediaStatus){Page(page:$p,perPage:$pp){pageInfo{hasNextPage}media(type:ANIME,isAdult:false,idMal_in:$ids,sort:$sort,search:$q,genre:$g,season:$season,seasonYear:$y,status:$st,status_not:$stn){${MF}}}}`;
+const DETQ=`query($id:Int){Media(idMal:$id,type:ANIME){${MF} relations{edges{relationType node{idMal type format title{romaji english}}}} recommendations(sort:RATING_DESC,perPage:12){nodes{mediaRecommendation{idMal title{romaji english native} coverImage{extraLarge large} averageScore seasonYear startDate{year} genres status}}}}}`;
+const RELQ=`query($id:Int){Media(idMal:$id,type:ANIME){relations{edges{relationType node{idMal type format title{romaji english}}}}}}`;
+const aniPage=async v=>{const j=await gql('pg',PAGEQ,{p:1,pp:24,...v}),pg=j.data.Page;let it=pg.media.filter(m=>m.idMal);if(v.ids)it=v.ids.map(i=>it.find(m=>m.idMal==i)).filter(Boolean);return{items:it,hasNext:!!pg.pageInfo.hasNextPage}};
+/* Jikan: episodes only. serialized (<3 req/s), 12s timeout, 1 retry; stale requests are skipped WITHOUT blocking the queue */
+async function fx(p){const c=new AbortController(),id=setTimeout(()=>c.abort(),TMO+3000);try{const r=await fetch(API+p,{signal:c.signal});if(r.status==429||r.status>=500){const e=new Error('HTTP '+r.status);e.retry=1;throw e}if(!r.ok){const e=new Error('HTTP '+r.status);e.fatal=1;throw e}return await r.json()}catch(e){if(!e.fatal)e.retry=1;if(e.name=='AbortError')e.message='timeout';throw e}finally{clearTimeout(id)}}
+function api(p){const k='rv:'+p,tk=T,c0=cget(k);if(c0)return Promise.resolve(c0);
+const stale=()=>{const e=new Error('stale');e.stale=1;return e};
+const run=async()=>{let err;for(let i=0;i<2;i++){if(tk!==T)throw stale();await sleep(Math.max(0,420-(Date.now()-last))+(i?1200:0));if(tk!==T)throw stale();last=Date.now();try{const j=await fx(p);cset(k,j);return j}catch(e){err=e;if(!e.retry)break}}throw err};
+const pr=chain.then(run,run);chain=pr.catch(()=>{});return pr.catch(e=>e.stale?new Promise(()=>{}):Promise.reject(e))}
+const skel=(n=8)=>'<div class="card"><div class="pic sk"></div></div>'.repeat(n);
+async function load(el,fn,render,sk){el.innerHTML=sk??skel();try{const r=await fn();el.innerHTML='';render(r,el)}catch(e){el.innerHTML=`<div class="err glass">تعذّر جلب البيانات (${esc(errMsg(e))})<button class="btn">إعادة المحاولة</button></div>`;el.querySelector('button').onclick=()=>load(el,fn,render,sk)}}
+const norm=m=>({id:m.idMal,title:m.title?.english||m.title?.romaji||'',ja:m.title?.native||'',img:m.coverImage?.extraLarge||m.coverImage?.large||'',banner:m.bannerImage||'',score:m.averageScore!=null?(m.averageScore/10).toFixed(1):null,year:m.seasonYear||m.startDate?.year||'',genre:GAR[m.genres?.[0]]||m.genres?.[0]||'',status:STA[m.status]||'',local:!!m._local,eps:m.episodes});
+const card=n=>`<a class="card" href="#/anime/${n.id}"><div class="pic"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="" src="${esc(n.img)||FB}" onerror="this.onerror=null;this.src=FB"><span class="sc">${n.local?'≈':'★'} ${n.score??'—'}</span></div><h3>${esc(n.title)}</h3><p class="ja">${esc(n.ja)}</p><p class="meta">${[n.year,n.genre,n.status].filter(Boolean).map(esc).join(' • ')}</p></a>`;
+const cards=l=>l.map(m=>{DB[m.idMal]=m;return card(norm(m))}).join('');
+const favs=()=>LS.get('rv_fav',{}),prog=()=>LS.get('rv_prog',{});
+const back=()=>{history.length>1?history.back():location.hash='/'};
+function paged(el,fetchPage){el.innerHTML='<div class="grid"></div><div class="more"></div>';const g=el.firstChild,m=el.lastChild,seen=new Set();let p=1;
+const go=async()=>{m.innerHTML='<div class="grid">'+skel(4)+'</div>';try{const r=await fetchPage(p);g.insertAdjacentHTML('beforeend',cards(r.items.filter(a=>!seen.has(a.idMal)&&seen.add(a.idMal))));m.innerHTML=r.hasNext?'<button class="btn">تحميل المزيد</button>':(g.children.length?'':'<p class="empty">لا توجد نتائج مطابقة.</p>');const b=m.querySelector('button');if(b)b.onclick=()=>{p++;go()}}catch(e){m.innerHTML=`<div class="err glass">تعذّر الجلب (${esc(errMsg(e))})<button class="btn">إعادة المحاولة</button></div>`;m.querySelector('button').onclick=go}};go()}
+let PL=null,HLS=null,SAVE=null;
+function killPlayer(){try{SAVE&&SAVE()}catch{}SAVE=null;if(HLS){HLS.destroy();HLS=null}if(PL){try{PL.dispose()}catch{}PL=null}}
+/* ROUTER */
+function route(){killPlayer();T++;const t=T,h=location.hash.slice(1)||'/',[p,qs]=h.split('?'),s=p.split('/').filter(Boolean);scrollTo(0,0);
+document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+(s[0]?'/'+s[0]:'/')||(s[0]=='list'&&a.getAttribute('href')=='#/list/popular')));
+const r=s[0];if(!r)home(t);else if(r=='search')search(qs);else if(r=='list')list(s[1]);else if(r=='favs')favPage();else if(r=='continue')contPage();else if(r=='anime')detail(s[1],t);else if(r=='watch')watch(s[1],+s[2]||1,t);else app.innerHTML='<p class="empty">الصفحة غير موجودة. <a class="btn" href="#/">الرئيسية</a></p>'}
+function sec(k,t,more){return `<section class="sec"><div class="sh"><h2>${t}</h2>${more?`<a href="${more}">عرض الكل ‹</a>`:''}</div><div class="row" id="r-${k}"></div></section>`}
+function setHero(m){const el=$('#hero');if(!el)return;const n=norm(m),bd=n.banner||n.img||FB;el.className='hero glass';el.innerHTML=`<img class="bg" alt="" src="${esc(bd)}" data-f="${esc(n.img||FB)}" onerror="this.onerror=null;this.src=this.dataset.f"><div class="in"><img alt="" referrerpolicy="no-referrer" src="${esc(n.img)||FB}" onerror="this.onerror=null;this.src=FB"><div><span class="chip">${n.local?'≈ ':'★ '}${n.score??'—'}</span>${n.local?' <span class="chip">بيانات محلية احتياطية</span>':''}<h1>${esc(n.title)}</h1><p>${esc(clean(m.description).slice(0,240))}</p><div class="wn"><a class="btn" href="#/anime/${n.id}">التفاصيل والحلقات</a></div></div></div>`}
+function home(t){const cont=Object.values(prog()).sort((a,b)=>b.u-a.u);
+app.innerHTML='<section id="hero" class="hero glass sk"></section><div id="fnote"></div><section class="sec"><div class="sh"><h2>أنميات مميزة</h2></div><div class="row" id="r-feat">'+skel(8)+'</div></section>'+(cont.length?`<section class="sec"><div class="sh"><h2>أكمل المشاهدة</h2><a href="#/continue">عرض الكل ‹</a></div><div class="row">${cont.slice(0,10).map(contCard).join('')}</div></section>`:'')+Object.entries(LISTS).map(([k,v])=>sec(k,v[1],'#/list/'+k)).join('')+`<section class="sec"><div class="sh"><h2>التصنيفات</h2></div><div class="chips">${GEN.map(([i,n])=>`<a class="chip" href="#/search?g=${i}">${n}</a>`).join('')}</div></section>`;
+(async()=>{try{const r=await aniPage({ids:FEATID,pp:8});if(t!==T)return;$('#r-feat').innerHTML=cards(r.items);if(r.items[0])setHero(r.items[0])}catch(e){if(t!==T)return;const L=FEAT.map(fromLocal);$('#r-feat').innerHTML=cards(L);setHero(L[0]);$('#fnote').innerHTML=`<div class="err glass">تعذّر الاتصال بـ AniList (${esc(errMsg(e))}). تُعرض بيانات محلية احتياطية (≈) بلا أغلفة.<button class="btn">إعادة المحاولة</button></div>`;$('#fnote button').onclick=()=>route()}})();
+Object.keys(LISTS).forEach(k=>load($('#r-'+k),()=>aniPage({pp:14,...LISTS[k][0]()}),(r,el)=>{el.innerHTML=cards(r.items)}))}
+function list(k){const L=LISTS[k];if(!L){location.hash='/';return}app.innerHTML=`<h1>${L[1]}</h1><div class="chips">${Object.entries(LISTS).map(([i,v])=>`<a class="chip ${i==k?'on':''}" href="#/list/${i}">${v[1].split(' (')[0]}</a>`).join('')}</div><div id="res"></div>`;paged($('#res'),p=>aniPage({...L[0](),p}))}
+function search(qs){const P=new URLSearchParams(qs||''),q=P.get('q')||'',g=P.get('g')||'',o=P.get('o')||'pop';
+app.innerHTML=`<h1>استكشاف الأنميات</h1><form id="sf" class="glass sf"><input name="q" value="${esc(q)}" placeholder="ابحث بالعربية أو الإنجليزية أو اليابانية"><select name="o"><option value="pop">الأكثر شعبية</option><option value="top">الأعلى تقييماً</option><option value="new">الأحدث</option></select><button class="btn">بحث</button></form><div class="chips">${GEN.map(([i,n])=>`<a class="chip ${g==i?'on':''}" href="#/search?${new URLSearchParams({q,g:g==i?'':i,o})}">${n}</a>`).join('')}</div><div id="res"></div>`;
+$('#sf [name=o]').value=o;$('#sf').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);location.hash='/search?'+new URLSearchParams({q:f.get('q').trim(),g,o:f.get('o')})};
+if(!q&&!g){$('#res').innerHTML='<p class="note">مكتبة Anime RVeno المختارة. ابحث أو اختر تصنيفاً لجلب المزيد.</p><div id="lib"></div><div class="sh" style="margin-top:28px"><h2>المزيد من الأنميات</h2></div><div id="more2"></div>';load($('#lib'),()=>aniPage({ids:LIBID,pp:20}),(r,el)=>{el.innerHTML='<div class="grid">'+cards(r.items)+'</div>'},'<div class="grid">'+skel(20)+'</div>');paged($('#more2'),p=>aniPage({sort:['POPULARITY_DESC'],p}));return}
+let eq=q;AR.forEach((a,i)=>{if(q&&q.includes(a))eq=eq.replace(a,LIB[i])});
+const so={pop:'POPULARITY_DESC',top:'SCORE_DESC',new:'START_DATE_DESC'}[o]||'POPULARITY_DESC';
+paged($('#res'),p=>aniPage({sort:[so],q:eq||undefined,g:g||undefined,stn:o=='new'?'NOT_YET_RELEASED':undefined,p}))}
+function favPage(){const f=Object.values(favs());app.innerHTML='<h1>المفضلة</h1>'+(f.length?`<div class="grid">${f.map(card).join('')}</div>`:'<p class="empty glass">لم تضف أي أنمي بعد. افتح أي أنمي واضغط «أضف للمفضلة».</p>')}
+const contCard=p=>`<a class="card" href="#/watch/${p.id}/${p.ep}"><div class="pic"><img loading="lazy" alt="" src="${esc(p.img)||FB}" onerror="this.onerror=null;this.src=FB"><span class="sc">حلقة ${p.ep}</span></div><h3>${esc(p.title)}</h3><div class="pbar"><i style="width:${p.d?Math.min(100,p.t/p.d*100):0}%"></i></div></a>`;
+function contPage(){const c=Object.values(prog()).sort((a,b)=>b.u-a.u);app.innerHTML='<h1>أكمل المشاهدة</h1>'+(c.length?`<div class="grid">${c.map(contCard).join('')}</div>`:'<p class="empty glass">لم تبدأ مشاهدة أي حلقة بعد.</p>')}
+async function detail(id,t){const f=FEAT.find(x=>x.id==id),seed=DB[id]||(f&&fromLocal(f));
+app.innerHTML=`<div class="wn" style="margin:0 0 12px"><button class="btn ghost" id="bk">‹ رجوع</button></div><div id="dh"></div><section class="sec" id="ssn"></section><section class="sec"><div class="sh"><h2>الحلقات</h2></div><div id="eps"></div></section><section class="sec"><div class="sh"><h2>أنميات مشابهة</h2></div><div class="row" id="sim"></div></section>`;$('#bk').onclick=back;
+const paint=(m,note,retry)=>{const n=norm(m),i=LIBID.indexOf(+id),isF=!!favs()[id],bd=n.banner||n.img||FB;
+$('#dh').innerHTML=(note?`<div class="err glass">${note}${retry?'<button class="btn">إعادة المحاولة</button>':''}</div>`:'')+`<div class="det glass"><div class="hero" style="position:absolute;inset:0;min-height:0;border:0;background:none;padding:0"><img class="bg" alt="" referrerpolicy="no-referrer" src="${esc(bd)}" data-f="${esc(n.img||FB)}" onerror="this.onerror=null;this.src=this.dataset.f"></div><div class="in"><img class="cv" alt="" referrerpolicy="no-referrer" src="${esc(n.img)||FB}" onerror="this.onerror=null;this.src=FB"><div class="bx"><h1>${esc(n.title)}</h1>${i>=0?`<p>${AR[i]}</p>`:''}<p class="ja">${esc(n.ja)}</p><div class="tags"><span>${n.local?'≈':'★'} ${n.score??'غير متوفر'}</span><span>${esc(n.status)}</span>${n.year?`<span>${n.year}</span>`:''}<span>${n.eps??'؟'} حلقة</span>${(m.genres||[]).map(x=>`<span>${esc(GAR[x]||x)}</span>`).join('')}</div><p class="syn">${esc(clean(m.description)||'لا توجد قصة متوفرة لهذا العمل.')}</p><div class="wn"><button class="btn" id="fv">${isF?'إزالة من المفضلة':'♥ أضف للمفضلة'}</button><a class="btn ghost" href="#/watch/${id}/1">ابدأ من الحلقة 1</a></div></div></div></div>`;
+const rb=$('#dh .err button');if(rb)rb.onclick=()=>route();
+$('#fv').onclick=e=>{const fv=favs();if(fv[id]){delete fv[id];e.target.textContent='♥ أضف للمفضلة'}else{fv[id]=n;e.target.textContent='إزالة من المفضلة'}LS.set('rv_fav',fv)}};
+if(seed)paint(seed,seed._local?'بيانات محلية احتياطية (≈)، جارٍ تحميل البيانات الحقيقية…':'');else $('#dh').innerHTML='<div class="det glass sk" style="min-height:340px"></div>';
+eps(id);
+try{const m=(await gql('det',DETQ,{id:+id})).data.Media;if(t!==T)return;DB[id]=m;paint(m);
+const rc=(m.recommendations?.nodes||[]).map(x=>x.mediaRecommendation).filter(x=>x&&x.idMal);$('#sim').innerHTML=rc.length?cards(rc):'<p class="empty">لا توجد توصيات متاحة.</p>';seasons(m,t)}
+catch(e){if(t!==T)return;$('#sim').innerHTML='';$('#ssn').remove();if(seed)paint(seed,`تعذّر تحميل بقية التفاصيل (${esc(errMsg(e))}).`,1);else $('#dh').innerHTML=`<div class="err glass">تعذّر تحميل الأنمي (${esc(errMsg(e))})<button class="btn">إعادة المحاولة</button></div>`,$('#dh button').onclick=()=>route()}}
+async function seasons(m,t){const el=$('#ssn');if(!el)return;try{const ok=e=>e.node.type=='ANIME'&&['TV','TV_SHORT'].includes(e.node.format)&&e.node.idMal,pick=(ed,k)=>ed.filter(e=>e.relationType==k&&ok(e)).map(e=>e.node),rel=async i=>(await gql('rel',RELQ,{id:i})).data.Media.relations.edges,E0=m.relations?.edges||[],back=[],fw=[];
+let ed=E0;for(let i=0;i<5;i++){const q=pick(ed,'PREQUEL')[0];if(!q||back.some(b=>b.id==q.idMal))break;back.unshift({id:q.idMal,name:q.title.english||q.title.romaji});ed=await rel(q.idMal)}
+ed=E0;for(let i=0;i<6;i++){const q=pick(ed,'SEQUEL')[0];if(!q||fw.some(b=>b.id==q.idMal)||back.some(b=>b.id==q.idMal))break;fw.push({id:q.idMal,name:q.title.english||q.title.romaji});ed=await rel(q.idMal)}
+if(t!==T)return;const all=[...back,{id:m.idMal,name:'',cur:1},...fw];if(all.length<2){el.remove();return}
+el.innerHTML='<div class="sh"><h2>المواسم والأجزاء</h2></div><div class="chips">'+all.map((q,i)=>`<a class="chip ${q.cur?'on':''}" href="#/anime/${q.id}" title="${esc(q.name)}">الموسم ${i+1}${q.cur?'':' — '+esc(String(q.name).slice(0,26))}</a>`).join('')+'</div><p class="note" style="text-align:start;padding:0">مستخرجة من علاقات (سابق/لاحق) في AniList.</p>'}catch{el.remove()}}
+function eps(id){const el=$('#eps');el.innerHTML='<div class="eplist"></div><div class="more"></div>';const L=el.firstChild,m=el.lastChild,w=prog()[id]?.w||{};let p=1;
+const go=async()=>{m.innerHTML='<p class="note">جارٍ تحميل الحلقات…</p>';try{const j=await api(`/anime/${id}/episodes?page=${p}`);if(p==1&&!j.data.length){m.innerHTML='<p class="empty glass">قائمة الحلقات غير متوفرة لهذا العمل في قاعدة البيانات (قد يكون فيلماً أو لم يُعرض بعد).</p>';return}
+L.insertAdjacentHTML('beforeend',j.data.map(e=>`<a class="ep glass ${w[e.mal_id]?'w':''}" href="#/watch/${id}/${e.mal_id}"><span class="n">${e.mal_id}</span><div><b>${esc(e.title||'حلقة '+e.mal_id)}</b><small>${esc(e.title_japanese||'')}</small></div><span class="btn" style="padding:6px 14px;font-size:.85rem">▶ مشاهدة</span></a>`).join(''));
+m.innerHTML=j.pagination?.has_next_page?'<button class="btn">تحميل المزيد من الحلقات</button>':'';const b=m.querySelector('button');if(b)b.onclick=()=>{p++;go()}}catch(e){m.innerHTML=`<div class="err glass">تعذّر تحميل الحلقات (${esc(errMsg(e))})<button class="btn">إعادة المحاولة</button></div>`;m.querySelector('button').onclick=go}};go()}
+const fmt=s=>{s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const DEMO=[{lb:'MP4 تجريبي',u:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'},{lb:'HLS تجريبي',u:'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'}];
+async function watch(id,ep,t){app.innerHTML='<div class="player glass sk" style="aspect-ratio:16/9"></div>';let m=DB[id];
+if(!m){try{m=(await gql('det',DETQ,{id:+id})).data.Media;DB[id]=m}catch(e){if(t!==T)return;const f=FEAT.find(x=>x.id==id);if(f)m=fromLocal(f);else{app.innerHTML=`<div class="err glass">تعذّر تحميل الصفحة (${esc(errMsg(e))})<button class="btn">إعادة المحاولة</button></div>`;app.querySelector('button').onclick=()=>watch(id,ep,T);return}}}
+if(t!==T)return;const n=norm(m),tot=n.eps,SRC=LS.get('rv_src',{}),src=(SRC[id]||'').split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const k=l.indexOf('|'),lb=k>0?l.slice(0,k):'افتراضي',u=(k>0?l.slice(k+1):l).trim().replace('{ep}',ep);return{lb,u}}).filter(s=>/^https?:\/\//i.test(s.u));
+app.innerHTML=`<div class="sh"><div class="wn" style="margin:0"><button class="btn ghost" id="bk">‹ رجوع</button><h1 style="margin:0;font-size:1.1rem">${esc(n.title)} — الحلقة ${ep}</h1></div><a href="#/anime/${id}" style="color:var(--p)">كل الحلقات ‹</a></div><p class="meta" id="et" style="margin:10px 0"></p><div id="pw"></div>
+<div class="wn">${ep>1?`<a class="btn ghost" href="#/watch/${id}/${ep-1}">‹ السابقة</a>`:''}${!tot||ep<tot?`<a class="btn" href="#/watch/${id}/${ep+1}">التالية ›</a>`:''}</div>
+<div class="src glass"><b>مصدر الفيديو (روابطك المرخّصة)</b><small style="color:var(--m)">سطر لكل جودة بالشكل: 1080p|https://example.com/ep{ep}.mp4 — يُستبدل {ep} برقم الحلقة. يدعم MP4 وWebM وHLS (m3u8)، ويجب أن يسمح خادم الفيديو بـ CORS. تُحفظ الروابط على جهازك فقط.</small><textarea id="st" placeholder="720p|https://...">${esc(SRC[id]||'')}</textarea><button class="btn" id="ss">حفظ المصدر</button>
+<hr style="border:0;border-top:1px solid var(--b);width:100%"><b>اختبار المشغل بفيديو تجريبي مرخّص</b><div class="wn"><button class="btn ghost" data-d="0">▶ تجربة MP4</button><button class="btn ghost" data-d="1">▶ تجربة HLS</button></div><small style="color:var(--m)">Big Buck Bunny — CC BY 3.0، © Blender Foundation. للاختبار فقط وليس حلقة الأنمي.</small></div>`;
+$('#bk').onclick=back;api(`/anime/${id}/episodes?page=${Math.ceil(ep/100)}`).then(j=>{const e=j.data.find(x=>x.mal_id==ep);if(t===T&&e&&$('#et'))$('#et').textContent=e.title||''}).catch(()=>{});
+$('#ss').onclick=()=>{const s=LS.get('rv_src',{});s[id]=$('#st').value;LS.set('rv_src',s);route()};
+const mount=(list,demo)=>{killPlayer();$('#pw').innerHTML=`<div class="player glass"><video id="v" class="video-js vjs-rv" controls playsinline preload="metadata"></video></div><div class="wn"><label>${demo?'مصدر تجريبي':'الجودة'} <select id="ql">${list.map((s,i)=>`<option value="${i}">${esc(s.lb)}</option>`).join('')}</select></label><select id="hq" hidden aria-label="جودة HLS"></select></div>`+(demo?'<p class="note">فيديو تجريبي مرخّص لاختبار المشغل (Big Buck Bunny — CC BY 3.0). لا يُحفظ له تقدم.</p>':'');
+const v=$('#v'),hq=$('#hq'),P=demo?null:prog()[id],isH=u=>/\.m3u8(\?|#|$)/i.test(u);let lastSave=0,finished=false,shown=false,pl=null;
+const fail=()=>{if(shown)return;shown=true;$('.player').insertAdjacentHTML('beforebegin','<div class="err glass vf">تعذّر تشغيل هذا الرابط. تأكد من صحته ومن أن الخادم يسمح بـ CORS وأن الصيغة مدعومة (MP4 / WebM / HLS).</div>')};
+if(!window.videojs){v.classList.remove('video-js','vjs-rv');v.style.cssText='width:100%;max-height:72vh;background:#000';const u=list[0].u;if(isH(u)&&window.Hls&&Hls.isSupported()){HLS=new Hls();HLS.loadSource(u);HLS.attachMedia(v);HLS.on(Hls.Events.ERROR,(e,d)=>{if(d.fatal)fail()})}else v.src=u;v.onerror=fail;return}
+pl=PL=videojs(v,{fluid:true,aspectRatio:'16:9',playbackRates:[.5,.75,1,1.25,1.5,2],controlBar:{pictureInPictureToggle:false},userActions:{hotkeys:true}});
+const go=d=>{location.hash=`/watch/${id}/${ep+d}`};
+pl.el().insertAdjacentHTML('beforeend',`<div class="rvt">${demo?'فيديو تجريبي':esc(n.title)+' • الحلقة '+ep}</div>`);
+const bt=(txt,ic,fn,ix)=>{const b=pl.controlBar.addChild('button',{controlText:txt},ix);b.addClass('rvb');b.el().innerHTML='<span aria-hidden="true">'+ic+'</span>';b.el().setAttribute('aria-label',txt);b.on('click',fn)};
+if(!demo){if(ep>1)bt('الحلقة السابقة','⏮',()=>go(-1),0);if(!tot||ep<tot)bt('الحلقة التالية','⏭',()=>go(1),ep>1?2:1)}
+const setS=(i,tm)=>{if(HLS){HLS.destroy();HLS=null}hq.hidden=true;shown=false;document.querySelectorAll('.vf').forEach(x=>x.remove());const u=list[i].u;pl.one('loadedmetadata',()=>{if(tm)pl.currentTime(tm)});
+if(isH(u)){if(window.Hls&&Hls.isSupported()){HLS=new Hls({enableWorker:true});HLS.loadSource(u);HLS.attachMedia(pl.tech(true).el());
+HLS.on(Hls.Events.MANIFEST_PARSED,(e,d)=>{if(d.levels.length>1){hq.innerHTML='<option value="-1">تلقائي</option>'+d.levels.map((l,k)=>`<option value="${k}">${l.height?l.height+'p':Math.round(l.bitrate/1000)+'k'}</option>`).join('');hq.hidden=false}});
+HLS.on(Hls.Events.ERROR,(e,d)=>{if(d.fatal){if(d.type===Hls.ErrorTypes.MEDIA_ERROR)HLS.recoverMediaError();else fail()}})}
+else if(document.createElement('video').canPlayType('application/vnd.apple.mpegurl'))pl.src({src:u,type:'application/x-mpegURL'});else fail()}
+else pl.src({src:u,type:/\.webm(\?|#|$)/i.test(u)?'video/webm':'video/mp4'})};
+const save=ok=>{if(demo||(!ok&&!(pl.currentTime()>0)))return;const pr=prog(),o=pr[id]||{w:{}};o.w=o.w||{};if(ok)o.w[ep]=1;pr[id]={...o,id:+id,title:n.title,img:n.img,ep,t:pl.currentTime()||0,d:pl.duration()||0,u:Date.now()};LS.set('rv_prog',pr)};
+SAVE=()=>{if(!finished)save()};
+pl.on('error',fail);
+pl.on('timeupdate',()=>{if(!finished&&Date.now()-lastSave>5000){lastSave=Date.now();save()}});
+pl.on('pause',()=>{if(!finished)save()});
+pl.on('ended',()=>{if(demo)return;finished=true;save(true);if(!tot||ep<tot){const pr=prog();pr[id].ep=ep+1;pr[id].t=0;pr[id].d=0;LS.set('rv_prog',pr);go(1)}});
+pl.ready(()=>setS(0,P&&P.ep==ep&&P.t<(P.d||1e9)-10?P.t:0));
+$('#ql').onchange=e=>{const tm=pl.currentTime(),pp=!pl.paused();setS(+e.target.value,tm);if(pp)pl.play()};
+hq.onchange=e=>{if(HLS)HLS.currentLevel=+e.target.value}};
+document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>mount([DEMO[+b.dataset.d]],1));
+if(src.length)mount(src,0);else $('#pw').innerHTML='<div class="nov glass">لا يوجد مصدر مشاهدة قانوني لهذه الحلقة حالياً.<br>Jikan يوفّر بيانات الأنمي فقط ولا يوفّر فيديو. أضف رابط فيديو تملك حق استخدامه، أو جرّب المشغل بالفيديو التجريبي أدناه.</div>'}
+const nl=NAV.map(([h,l,i])=>`<a href="#${h}"><span>${i}</span>${l}</a>`).join('');$('#nt').innerHTML=NAV.map(([h,l])=>`<a href="#${h}">${l}</a>`).join('');$('#nb').innerHTML=nl;
+addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
